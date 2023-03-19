@@ -1,0 +1,38 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':core')
+    implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.36'
+
+    implementation group: 'com.rabbitmq', name: 'amqp-client', version: '5.16.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+}
+
+task mqtelemedclient(type: JavaExec) {
+  group 'Connectors'
+  description 'Run TelemedClient - RabbitMQ producer'
+
+  classpath sourceSets.main.runtimeClasspath
+  mainClass = 'mq.TeleMedClient_MqProducer'
+}
+
+task mqtelemedserver(type: JavaExec) {
+  group 'Connectors'
+  description 'Run the TeleMed Server - RabbitMQ consumer'
+
+  classpath sourceSets.main.runtimeClasspath
+  mainClass = 'mq.TeleMedServer_MqConsumer'
+}
